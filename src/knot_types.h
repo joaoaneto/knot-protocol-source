@@ -42,6 +42,7 @@
 #define KNOT_TYPE_ID_SPEED				0x0013
 #define KNOT_TYPE_ID_VOLUMEFLOW				0x0014
 #define KNOT_TYPE_ID_ENERGY				0x0015
+//#define KNOT_TYPE_ID_ANALOG				0x0016
 
 // MAX TypeID for basic units
 #define KNOT_TYPE_ID_BASIC_MAX				(KNOT_TYPE_ID_ENERGY+1)
@@ -55,6 +56,14 @@
 #define KNOT_TYPE_ID_LOGIC_MIN				(KNOT_TYPE_ID_PRESENCE)
 // MAX TypeID for logic units
 #define KNOT_TYPE_ID_LOGIC_MAX				(KNOT_TYPE_ID_COMMAND+1)
+
+// TypeIDs for generic units
+#define KNOT_TYPE_ID_ANALOG				0xFF10
+
+// Min TypeID for generic units
+#define KNOT_TYPE_ID_GENERIC_MIN				(KNOT_TYPE_ID_ANALOG)
+// MAX TypeID for generic units
+#define KNOT_TYPE_ID_GENERIC_MAX				(KNOT_TYPE_ID_ANALOG+1)
 
 #define KNOT_TYPE_ID_INVALID				0xFFFF
 

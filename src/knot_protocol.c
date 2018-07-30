@@ -123,13 +123,17 @@ static const struct schema {
 	{KNOT_VALUE_TYPE_FLOAT, UNIT_LONG_MASK		},
 	{KNOT_VALUE_TYPE_INT, UNIT_SPEED_MASK		},
 	{KNOT_VALUE_TYPE_FLOAT, UNIT_VOLFLOW_MASK	},
-	{KNOT_VALUE_TYPE_INT, UNIT_ENERGY_MASK		}
+	{KNOT_VALUE_TYPE_INT, UNIT_ENERGY_MASK		},
 };
 
 static const uint8_t logic_types[]  = {
 	KNOT_VALUE_TYPE_BOOL,			// KNOT_TYPE_ID_PRESENCE
 	KNOT_VALUE_TYPE_BOOL,			// KNOT_TYPE_ID_SWITCH
 	KNOT_VALUE_TYPE_RAW			// KNOT_TYPE_ID_COMMAND
+};
+
+static const uint8_t generic_types[] = {
+	KNOT_VALUE_TYPE_INT			// KNOT_TYPE_ID_ANALOG
 };
 
 int knot_value_type_is_valid(uint8_t type)
@@ -156,6 +160,14 @@ int knot_type_id_is_logic(uint16_t type_id)
 	return KNOT_INVALID_DATA;
 }
 
+int knot_type_id_is_generic(uint16_t type_id)
+{
+	if (type_id >= KNOT_TYPE_ID_GENERIC_MIN && type_id < KNOT_TYPE_ID_GENERIC_MAX)
+		return KNOT_SUCCESS;
+
+	return KNOT_INVALID_DATA;
+}
+
 int knot_schema_is_valid(uint16_t type_id, uint8_t value_type, uint8_t unit)
 {
 	/* int/float/bool/raw ? */
@@ -168,8 +180,10 @@ int knot_schema_is_valid(uint16_t type_id, uint8_t value_type, uint8_t unit)
 				return KNOT_SUCCESS;
 
 		/* Verify logic type IDs */
-		} else if (knot_type_id_is_logic(type_id) == KNOT_SUCCESS) {
-			if (logic_types[TYPE_ID_MASK(type_id)] == value_type)
+		} else if (knot_type_id_is_logic(type_id) == KNOT_SUCCESS ||
+			   knot_type_id_is_generic(type_id) == KNOT_SUCCESS) {
+			if (logic_types[TYPE_ID_MASK(type_id)] == value_type ||
+			    generic_types[TYPE_ID_MASK(type_id)] == value_type)
 				return KNOT_SUCCESS;
 		}
 	}
